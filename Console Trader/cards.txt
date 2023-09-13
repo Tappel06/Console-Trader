@@ -1,0 +1,8 @@
+second cards: (60 of them)
+minute cards: (60 of them)
+hour cards: (24 of them)
+day cards: (?????)
+
+Stock_Table
+
+Stock_id || Simulator_id || Name || Industry || Default_price || Last_hour_price || Last_day_price || Current_price 
