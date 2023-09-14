@@ -1,7 +1,6 @@
 '''This file contains all the methods regarding the simulator_table in console_trader_db'''
 
 #=====Imports=====#
-import os
 import sqlite3
 
 

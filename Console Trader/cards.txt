@@ -1,8 +1,56 @@
-second cards: (60 of them)
-minute cards: (60 of them)
-hour cards: (24 of them)
-day cards: (?????)
+Day cards: (40 cards) 	(How much the market moved on the day (Excludes reset card))
+			6 Terrible cards, 6 Good cards
+
+			1. -0.10 | +0.10
+			2. -0.20 | +0.20
+			3. -0.25 | +0.25
+			4. -0.50 | +0.50
+			5. -0.75 | +0.75
+			6. -1.00 | +1.00
+			7. -1.25 | +1.25
+			8. -1.50 | +1.50
+			9. -1.75 | +1.75
+		        10. -2.00 | +2.00
+			11. -2.50 | +2.50
+			12. -3.00 | +3.00
+			13. -3.50 | +3.50
+			14. -4.00 | +4.00
+			15. -5.00 | +5.00 (Terrible / Good cards
+			16. -6.00 | +6.00
+			17. -7.00 | +7.00
+			18. -8.00 | +8.00
+			19. -9.00 | +9.00
+			20. -10.00 | +10.00
+
+
+Industry cards: (40 cards) 	(How much the specific Industry changes (Excludes reset card))
+				1 Terrible card, 1 Good card
+
+				1. -0.10 | +0.10
+				2. -0.20 | +0.20
+				3. -0.25 | +0.25
+				4. -0.50 | +0.50
+				5. -0.75 | +0.75
+				6. -1.00 | +1.00
+				7. -1.25 | +1.25
+				8. -1.50 | +1.50
+				9. -1.75 | +1.75
+		        	10. -2.00 | +2.00
+				11. -2.25 | +2.25
+				12. -2.50 | +2.50
+				13. -2.75 | +2.75
+				14. -3.00 | +3.00
+				15. -3.25 | +3.25 
+				16. -3.50 | +3.50
+				17. -3.75 | +3.75
+				18. -4.00 | +4.00
+				19. -4.25 | +4.25
+				20. -5.00 | +5.00 (Terrible / Good cards
+				
+
+stock cards: (40 cards) 	(How much the specific stock changes (Includes 1 reset card)
+				1 Terrible card, 1 Good card
 
 Stock_Table
 
-Stock_id || Simulator_id || Name || Industry || Default_price || Last_hour_price || Last_day_price || Current_price 
+Stock_id || Simulator_id || Name || Industry || Default_price || Current_price 
