@@ -13,7 +13,7 @@ class Simulator_portfolio():
         self.simulator_id = simulator_id
 
         # Creates stock market object
-        self.stock_market_menu = Stock_market_menu()
+        self.stock_market_menu = Stock_market_menu(self.simulator_id)
 
         self.simulator_portfolio_options()
 
@@ -33,7 +33,7 @@ class Simulator_portfolio():
 
             # If option equals "1" run stocks_menu() (Seperate class)
             if option == "1":
-                self.stock_market_menu.stock_market_options(self.simulator_id)
+                self.stock_market_menu.stock_market_options()
                 # Print header, and clears console
                 self.portfolio_header()
 

@@ -2,6 +2,7 @@
 
 #=====Imports=====#
 from DB_Communicator.simulator_table import Simulator_table
+from DB_Communicator.Stock_table import Stock_table
 import os
 
 #=====Classes=====#
@@ -11,6 +12,8 @@ class Db_manager():
     def __init__(self):
         # Creates Simulator_table object
         self.sim_table = Simulator_table()
+        # Creates Stock_table object
+        self.stock_table = Stock_table()
 
 
     def create_database_directory(self):
@@ -29,13 +32,21 @@ class Db_manager():
     def create_tables(self):
         """Checks if tables exist in database, creates it if they do not exist"""
 
-        # Creates simulator tables
+        # Creates simulator table
         if self.sim_table.simulator_table_exists() == True:
             print("simulator table exists.")
         else:
             print("creating simulator table...")
             self.sim_table.create_simulator_table()
             print("simulator table created.")
+
+        # Creates stock table
+        if self.stock_table.stock_table_exists() == True:
+            print("stock table exists.")
+        else:
+            print("creating stock table...")
+            self.stock_table.create_stock_table()
+            print("stock table created.")
 
 
     def manage_db(self):

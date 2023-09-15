@@ -131,8 +131,10 @@ class Stock_table():
                 cursor.close()
 
 
-    def get_all_stock_records(self):
+    def get_all_stock_records(self, simulator_id):
         """Returns a list of all the stock records.
+
+            :param int simulator_id: The simulator's id.
         
             :returns: list of stock records.
 
@@ -145,7 +147,9 @@ class Stock_table():
 
             try:
                 # Executes query
-                cursor.execute('''SELECT * FROM stock_table;''')
+                cursor.execute('''SELECT * FROM stock_table
+                               WHERE Simulator_id = ?;''',
+                               (simulator_id,))
                 # Gets list
                 list = cursor.fetchall()
                 return list

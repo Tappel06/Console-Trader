@@ -19,8 +19,8 @@ main_menu.menu_options()
 
 
 #=====Test Program=====#
-#from Processors.db_manager import Db_manager
+#from Processors.stock_processors import Stock_processors
+#stock = Stock_processors(1)
+#stock.get_all_stock_records()
 
-#a = Db_manager()
 
-#a.create_database_directory()

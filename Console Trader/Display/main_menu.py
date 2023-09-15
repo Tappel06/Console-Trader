@@ -2,6 +2,7 @@
 
 #=====Imports=====#
 from Processors.simulator_processors import Simulator_processors
+from Processors.stock_processors import Stock_processors
 from Display.simulator_portfolio import Simulator_portfolio
 import os
 
@@ -110,6 +111,10 @@ class Main_menu():
                 # Checks if correct options inputed
                 if choice.upper() == "Y":
                     self.sim_process.create_new_simulator(new_name)
+                    # Creates object of stock_processors
+                    stock_processors = Stock_processors(self.sim_process.get_simulator_id(new_name))
+                    # Add stocks for specific simulator in  stock_table in db
+                    stock_processors.add_stock_records_to_stock_table()
                     # Enter portfolio by id
                     portfolio = Simulator_portfolio(self.sim_process.get_simulator_id(new_name))
                     # exits method
