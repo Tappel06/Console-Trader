@@ -3,6 +3,9 @@
 #=====Imports=====#
 from DB_Communicator.simulator_table import Simulator_table
 from DB_Communicator.Stock_table import Stock_table
+from DB_Communicator.day_card_table import Day_card_table
+from DB_Communicator.stock_card_table import Stock_card_table
+from DB_Communicator.industry_cards import Industry_card_table
 import os
 
 #=====Classes=====#
@@ -14,6 +17,12 @@ class Db_manager():
         self.sim_table = Simulator_table()
         # Creates Stock_table object
         self.stock_table = Stock_table()
+        # Creates Day_card object
+        self.day_card = Day_card_table()
+        # Creates stock card table
+        self.stock_card_table = Stock_card_table()
+        # Creates an object for Industry table
+        self.energy = Industry_card_table("Energy")
 
 
     def create_database_directory(self):
@@ -47,6 +56,30 @@ class Db_manager():
             print("creating stock table...")
             self.stock_table.create_stock_table()
             print("stock table created.")
+
+        # Creates day card table
+        if self.day_card.day_card_table_exists() == True:
+            print("day card table exists.")
+        else:
+            print("creating day card table...")
+            self.day_card.create_day_card_table()
+            print("day card table created.")
+
+        # Creates stock card table
+        if self.stock_card_table.stock_card_table_exists() == True:
+            print("stock card table exists.")
+        else:
+            print("creating stock card table...")
+            self.stock_card_table.create_stock_card_table()
+            print("stock card table created.")
+
+        # Creates Industry table. only need to create it once
+        if self.energy.industry_card_table_exists() == True:
+            print("industry card table exists.")
+        else:
+            print("creating industry card table...")
+            self.energy.create_industry_table()
+            print("industry card table created.")
 
 
     def manage_db(self):

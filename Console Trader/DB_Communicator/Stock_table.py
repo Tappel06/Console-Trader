@@ -44,8 +44,8 @@ class Stock_table():
             try:
                 # Execute query
                 cursor.execute('''CREATE TABLE stock_table(
-                                Stock_id INT(2),
-                                Simulator_id INT(2),
+                                Stock_id INT(7),
+                                Simulator_id INT(7),
                                 Name VARCHAR(30),
                                 Industry VARCHAR(30),
                                 Default_price DECIMAL(10, 2),

@@ -2,6 +2,7 @@
 
 #=====Imports=====#
 from Processors.stock_processors import Stock_processors
+from Processors.stock_market_engine import Stock_market_engine
 import os
 
 #=====Classes=====#
@@ -12,6 +13,8 @@ class Stock_market_menu():
         self.simulator_id = simulator_id
         # Create object of stock processors
         self.stock_processors = Stock_processors(self.simulator_id)
+        # Create Stock Market engine onject
+        self.stock_engine = Stock_market_engine(self.simulator_id)
         
 
 
@@ -44,8 +47,8 @@ class Stock_market_menu():
                             break
                 
                 elif option == len(stock_list) + 1:
+                    self.stock_engine.next_turn()
                     # clears console
-                    f = input(f"next turn.")
                     os.system("cls || clear")
 
                 elif option == len(stock_list) + 2:
@@ -60,9 +63,6 @@ class Stock_market_menu():
                 # Clears console
                 os.system("cls || clear")
                 print(f"\033[31m***** You did not enter a given option! *****\033[0m")
-
-            
-
 
 
     def print_stock_market_options(self):

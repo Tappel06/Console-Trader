@@ -44,7 +44,7 @@ class Simulator_table():
             try:
                 # Execute query
                 cursor.execute('''CREATE TABLE simulator_table(
-                                Simulator_id INT(2),
+                                Simulator_id INT(7),
                                 Simulator_name,
                                 PRIMARY KEY(Simulator_id)
                                 )''')
