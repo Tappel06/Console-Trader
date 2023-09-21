@@ -172,7 +172,7 @@ class Stock_market_engine():
         random_day_card_index = random.randint(0, len(day_cards) - 1)
         # Stores day card value in variable
         day_card_value = day_cards[random_day_card_index][2]
-        print(f"day card: {day_card_value}")
+        #print(f"day card: {day_card_value}")
 
         ##### Industry Cards ######
 
@@ -189,14 +189,40 @@ class Stock_market_engine():
             # Stores industry value in dictionary
             industry_dictionary[industry.industry_name] = ind_list[random_industry_card_index][3]
 
-        for category in industry_dictionary:
-            print(f"{category} : {industry_dictionary[category]}")
-
         ##### Stock Cards #####
 
         # Gets list of stocks
         stock_list = self.stock_table.get_all_stock_records(self.simulator_id)
-        print(stock_list[1])
+
+        # Go through each stock individualy
+        for stock in stock_list:
+            # Get list of cards of specific stock
+            stock_card_list = self.stock_card.get_all_stock_card_records(self.simulator_id, stock[2])
+            # Gets random index number of specific stock_card_list
+            rndm_stck_crd_lst = random.randint(0, len(stock_card_list) - 1)
+            # Stock_card_value
+            stock_card_value = stock_card_list[rndm_stck_crd_lst][3]
+            
+            # Total perecentage of all cards comined
+            total_card_percentage = day_card_value + industry_dictionary[stock[3]] + stock_card_value
+            # Resets stock if stock_card_value equals 0
+            if stock_card_value == 0:
+                self.stock_table.reset_stock_price(self.simulator_id, stock[2])
+            else:
+                # Calculate new price:
+                new_price = round((stock[5] * (total_card_percentage / 100)) + stock[5], 2)
+                # Update stocks in table
+                self.stock_table.update_stock_current_price(self.simulator_id, stock[2], new_price)
+
+            # Delete stock cards from stock card table
+            self.stock_card.delete_stock_card_record(self.simulator_id, stock[2], stock_card_value)
+
+        # Delete Day Card and Industry cards from table
+        self.day_card.delete_day_card_record(self.simulator_id, day_card_value)
+
+        for industry in self.industry_list:
+            industry.delete_industry_card_record(self.simulator_id, industry.industry_name, 
+                                                 industry_dictionary[industry.industry_name])
 
 
     def next_turn(self):
@@ -207,7 +233,6 @@ class Stock_market_engine():
 
         self.calculate_and_delete_cards()
 
-        f = input("Turn complete")
 
 
 

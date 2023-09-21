@@ -2,6 +2,9 @@
 
 #=====Imports=====#
 from Display.stock_market_menu import Stock_market_menu
+from Display.portfolio_menu import Portfolio_menu
+from Processors.simulator_processors import Simulator_processors
+from Processors.portfolio_processors import Portfolio_processors
 import os
 
 
@@ -12,8 +15,15 @@ class Simulator_portfolio():
     def __init__(self, simulator_id):
         self.simulator_id = simulator_id
 
-        # Creates stock market object
+        # Creates stock market menu object
         self.stock_market_menu = Stock_market_menu(self.simulator_id)
+        # Creates portfolio menu object
+        self.portfolio_menu = Portfolio_menu(self.simulator_id)
+
+        # Creates simulator object
+        self.simulator = Simulator_processors()
+        # Creates Portfolio processor object
+        self.portfolio_processor = Portfolio_processors()
 
         self.simulator_portfolio_options()
 
@@ -39,7 +49,9 @@ class Simulator_portfolio():
 
             # If option equals "2" run My_Portfolio_menu() (Seperate class)
             if option == "2":
-                pass
+                self.portfolio_menu.portfolio_options()
+                # Print header, and clears console
+                self.portfolio_header()
 
             # If option equals "3", Break.
             if option == "3":
@@ -62,12 +74,15 @@ class Simulator_portfolio():
     def portfolio_header(self):
         """Displays the header of the portfolio"""
 
+        # Record of the portfolio
+        record = self.portfolio_processor.get_portfolio_record(self.simulator_id)
+
         # Clears console
         os.system("cls || clear")
 
         # Print header
-        print(f'''Simulator: simname
-Available Funds: 0.00 coins
+        print(f'''Simulator: {self.simulator.get_simulator_name(self.simulator_id)}
+Available Funds: {round(record[0][2], 2)} coins
 Portfolio value: 0.00 coins
 -----------------------------              
               ''')

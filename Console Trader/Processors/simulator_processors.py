@@ -49,6 +49,24 @@ class Simulator_processors():
                 return record[0]
             
 
+    def get_simulator_name(self, simulator_id):
+        """Gets the id of a specific simulator.
+        
+            :param string simulator_name: The name of the simulator.
+
+            :returns: The id of the simulator.
+
+            :rtype: int
+        """
+        # Gets list of simulators
+        list = self.get_all_simulator_records()
+
+        # Checks if simulator_name matches with the record name, returns the id if so
+        for record in list:
+            if record[0] == simulator_id:
+                return record[1]
+            
+
     def simulator_name_exists(self, simulator_name):
         """Checks wether a simulator name exists, return true if so.
         
