@@ -39,6 +39,24 @@ class Stock_processors():
         # Gets list
         list = self.stock_table.get_all_stock_records(self.simulator_id)
         return list
+    
+
+    def get_stock_price(self, stock_name):
+        """Gets the current price of a stock
+        
+            :param string stock_name: The name of the stock
+
+            :returns: current price
+
+            :rtype: float
+        """
+        # Get list of stocks
+        list = self.get_all_stock_records()
+
+        # find specific stock
+        for stock in list:
+            if stock[2] == stock_name:
+                return stock[5]
 
 
 

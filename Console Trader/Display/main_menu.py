@@ -4,6 +4,7 @@
 from Processors.simulator_processors import Simulator_processors
 from Processors.stock_processors import Stock_processors
 from Display.simulator_portfolio import Simulator_portfolio
+from Processors.portfolio_processors import Portfolio_processors
 import os
 
 
@@ -14,6 +15,8 @@ class Main_menu():
     def __init__(self):
         # Creates object of Simulator_processors
         self.sim_process = Simulator_processors()
+        # Creates Portfolio processor object
+        self.portfolio_processor = Portfolio_processors()
 
     def menu_options(self):
         """Displays the options of the menu"""
@@ -115,8 +118,11 @@ class Main_menu():
                     stock_processors = Stock_processors(self.sim_process.get_simulator_id(new_name))
                     # Add stocks for specific simulator in  stock_table in db
                     stock_processors.add_stock_records_to_stock_table()
-                    # Enter portfolio by id
-                    portfolio = Simulator_portfolio(self.sim_process.get_simulator_id(new_name))
+                    # Create portfolio record
+                    self.portfolio_processor.create_portfolio_record(self.sim_process.get_simulator_id(new_name)
+                                                                     , 2000)
+                    # Enter simulator by id
+                    simulator = Simulator_portfolio(self.sim_process.get_simulator_id(new_name))
                     # exits method
                     return
                 

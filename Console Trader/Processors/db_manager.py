@@ -6,6 +6,8 @@ from DB_Communicator.Stock_table import Stock_table
 from DB_Communicator.day_card_table import Day_card_table
 from DB_Communicator.stock_card_table import Stock_card_table
 from DB_Communicator.industry_cards import Industry_card_table
+from DB_Communicator.portfolio_table import Portfolio_table
+from DB_Communicator.portfolio_stock_table import Portfolio_stock_table
 import os
 
 #=====Classes=====#
@@ -23,6 +25,10 @@ class Db_manager():
         self.stock_card_table = Stock_card_table()
         # Creates an object for Industry table
         self.energy = Industry_card_table("Energy")
+        # Creates a portfolio table object
+        self.portfolio = Portfolio_table()
+        # Creates a portfolio stock table object
+        self.portfolio_stocks = Portfolio_stock_table()
 
 
     def create_database_directory(self):
@@ -80,6 +86,22 @@ class Db_manager():
             print("creating industry card table...")
             self.energy.create_industry_table()
             print("industry card table created.")
+
+        # Creates portfolio table. only need to create it once
+        if self.portfolio.portfolio_table_exists() == True:
+            print("portfolio table exists.")
+        else:
+            print("creating portfolio table...")
+            self.portfolio.create_portfolio_table()
+            print("portfolio table created.")
+
+        # Creates portfolio stock table. only need to create it once
+        if self.portfolio_stocks.portfolio_stock_table_exists() == True:
+            print("portfolio stock table exists.")
+        else:
+            print("creating portfolio table...")
+            self.portfolio_stocks.create_portfolio_stock_table()
+            print("portfolio stock table created.")
 
 
     def manage_db(self):

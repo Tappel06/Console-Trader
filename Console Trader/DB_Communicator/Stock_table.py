@@ -51,7 +51,7 @@ class Stock_table():
                                 Default_price DECIMAL(10, 2),
                                 Current_price DECIMAL(10, 2),
                                 PRIMARY KEY(Stock_id)
-                                )''')
+                                );''')
                 # Commit the query
                 db.commit()
             
@@ -172,9 +172,9 @@ class Stock_table():
             try:
                 # Executes query
                 cursor.execute('''UPDATE stock_table
+                                SET Current_price = Default_price
                                 WHERE Simulator_id = ?
-                                AND Name = ?
-                                SET Current_price = Default_price;''',
+                                AND Name = ?;''',
                                 (simulator_id, stock_name,))
                 db.commit()
             
@@ -183,8 +183,8 @@ class Stock_table():
                 print("Could not update stock to default price in stock_table")
 
 
-    def update_stock_price(self, simulator_id, stock_name, new_price):
-        """Resets a stock's price back to its default price.
+    def update_stock_current_price(self, simulator_id, stock_name, new_price):
+        """Updates a stock's current price back to its default price.
         
             :param int simulator_id: The simulator's id.
             :param string stock_name: The stock's name.
@@ -198,10 +198,10 @@ class Stock_table():
             try:
                 # Executes query
                 cursor.execute('''UPDATE stock_table
+                               SET Current_price = ?
                                 WHERE Simulator_id = ?
-                                AND Name = ?
-                                SET Current_price = ?;''',
-                                (simulator_id, stock_name, new_price,))
+                                AND Name = ?;''',
+                                (new_price, simulator_id, stock_name,))
                 db.commit()
             
             except Exception:

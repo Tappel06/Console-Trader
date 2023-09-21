@@ -1,14 +1,15 @@
-'''This file contains all the methods regarding the stock market menu'''
+'''This file contains all the methods regarding the portfolio menu'''
 
 #=====Imports=====#
 from Processors.stock_processors import Stock_processors
 from Processors.stock_market_engine import Stock_market_engine
-from Display.buy_menu import Buy_menu
+from Processors.portfolio_processors import Portfolio_processors
+from Display.sell_menu import Sell_menu
 import os
 
 #=====Classes=====#
 
-class Stock_market_menu():
+class Portfolio_menu():
 
     def __init__(self, simulator_id):
         self.simulator_id = simulator_id
@@ -16,18 +17,19 @@ class Stock_market_menu():
         self.stock_processors = Stock_processors(self.simulator_id)
         # Create Stock Market engine onject
         self.stock_engine = Stock_market_engine(self.simulator_id)
+        # Create portfolio processor object
+        self.portfolio_processor = Portfolio_processors()
         
 
-
-    def stock_market_options(self):
-        """Displays the stock market options"""
-        # get stock list
-        stock_list = self.stock_processors.get_all_stock_records()
+    def portfolio_options(self):
+        """Displays the portfolio options"""
+        # get stock list of portfolio
+        stock_list = self.portfolio_processor.get_portfolio_stock_records(self.simulator_id)
 
         # CLears console
         os.system("cls || clear")
         while True:
-            self.print_stock_market_options()
+            self.print_portfolio_options()
 
             # Print next turn and return to previous menu option
             print(f"{len(stock_list) + 1}. Next turn"
@@ -43,9 +45,9 @@ class Stock_market_menu():
                     for i in range(len(stock_list)):
                         if option == i + 1:
                             # Creates Object for buying
-                            buy_menu = Buy_menu(self.simulator_id, stock_list[i][2])
+                            sell_menu = Sell_menu(self.simulator_id, stock_list[i][1])
                             # Run Buy options method
-                            buy_menu.buy_menu_options()
+                            sell_menu.sell_menu_options()
                             # clears console
                             os.system("cls || clear")
                             break
@@ -69,7 +71,7 @@ class Stock_market_menu():
                 print(f"\033[31m***** You did not enter a given option! *****\033[0m")
 
 
-    def print_stock_market_options(self):
+    def print_portfolio_options(self):
         """Prints the stock market options"""
 
         # Prints the stock headers
@@ -89,7 +91,7 @@ Price change since beginnining = P%B
         """Display all stocks and their details"""
 
         # Gets stock list
-        list = self.stock_processors.get_all_stock_records()
+        list = self.portfolio_processor.get_portfolio_stock_records(self.simulator_id)
 
         # Highlight colours
         colour_1_highlight = "\033[41m\033[30m"
@@ -97,58 +99,17 @@ Price change since beginnining = P%B
         default_colour = "\033[0m"
 
         stock_current_price_colour = ""
-        percentage_colour = ""
 
         # index number
         index = 1
         for stock in list:
-            
-            # Decides stock current price colour
-            if stock[5] > stock[4]:
-                stock_current_price_colour = colour_2_highlight
-            
-            elif stock[5] < stock[4]:
-                stock_current_price_colour = colour_1_highlight
 
-            else:
-                stock_current_price_colour = default_colour
-
-            # Calculate percentage
-            percentage = self.calculate_percentage(stock[4], stock[5])
             # Print
-            print(f"{index}.{' ' * (4 - len(str(index)))}"
-                  + f"{stock[2]}{' ' * (20- len(str(stock[2])))}"    # Stock name
-                  + f"{stock_current_price_colour}{stock[5]}{' ' * (10- len(str(stock[5])))}\033[0m"  # Stock current price
-                  + f"{stock_current_price_colour}{percentage}%{' ' * (7 - len(str(percentage)))}\033[0m" # Percentage
+            print(f"{index}.{' ' * (4 - len(str(index)))}" # Index
+                  + f"{stock[1]}{' ' * (20- len(str(stock[1])))}"    # Stock name
                 )
             
             # Index plus 1
             index += 1
         
         print(f"{'-' * 50}")
-            
-
-    def calculate_percentage(self, default_stock, current_stock):
-        """Calculates the percentage.
-        
-            :param float default_stock: The default stock price
-            :param float current_stock: The current stock price
-
-            :returns: Percentage
-
-            :rtype: float
-        """
-        # If current stock price is smaller than beginning
-        if current_stock < default_stock:
-            percentage = ((current_stock - default_stock) / default_stock) * 100
-            return round(percentage, 2)
-        
-        # If current stock price is bigger than beginning
-        elif current_stock > default_stock:
-            percentage = ((current_stock / default_stock) - 1) * 100
-            return round(percentage, 2)
-        
-        else:
-            return 0
-
-

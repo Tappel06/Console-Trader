@@ -10,7 +10,6 @@ class Simulator_table():
 
     def __init__(self):
         self.database_directory = "Database/console_trader_db"
-        pass
 
 
     def simulator_table_exists(self):
