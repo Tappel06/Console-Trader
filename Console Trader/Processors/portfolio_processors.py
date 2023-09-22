@@ -102,8 +102,8 @@ class Portfolio_processors():
 
             # deduct amount from portfolio Available cash
             record = self.get_portfolio_record(simulator_id)
-            old_amount = record[0][2]
-            new_amount = old_amount - (total_shares * stock_processor.get_stock_price(stock_name))
+            old_amount = round(record[0][2], 2)
+            new_amount = round(old_amount - (total_shares * stock_processor.get_stock_price(stock_name)), 2)
             self.portfolio.update_available_cash(simulator_id, new_amount)
 
         else:
@@ -115,6 +115,44 @@ class Portfolio_processors():
 
             # deduct amount from portfolio Available cash
             record = self.get_portfolio_record(simulator_id)
-            old_amount = record[0][2]
-            new_amount = old_amount - (total_shares * stock_processor.get_stock_price(stock_name))
+            old_amount = round(record[0][2], 2)
+            new_amount = round(old_amount - (total_shares * stock_processor.get_stock_price(stock_name)), 2)
+            self.portfolio.update_available_cash(simulator_id, new_amount)
+
+
+    def sell_delete_or_update_stock_record(self, simulator_id, stock_name, total_shares):
+        """Deletes or update a stock record in the portfolio_stock_table
+        
+            :param int simulator_id: The simulator's ID.
+            :param string stock_name: The stock's name.
+            :param int total_shares: The total shares being sold
+        """
+        # Creates stock processor object
+        stock_processor = Stock_processors(simulator_id)
+        
+        current_total_shares = self.get_stock_total_shares(simulator_id, stock_name)
+        # Checks if total shares are equal to current share, then deletes if so
+        
+        if current_total_shares == total_shares:
+
+            # Update add to portfolio available cash
+            record = self.get_portfolio_record(simulator_id)
+            old_amount = round(record[0][2], 2)
+            new_amount = round(old_amount + (total_shares * stock_processor.get_stock_price(stock_name)), 2)
+            self.portfolio.update_available_cash(simulator_id, new_amount)
+
+            # Delete record
+            self.portfolio_stock.delete_record(simulator_id, stock_name)
+
+        else:
+            # Calculates new shares
+            new_total_shares = self.get_stock_total_shares(simulator_id, stock_name) - total_shares
+            
+            # Updates shares
+            self.portfolio_stock.update_stock_shares(simulator_id, stock_name, new_total_shares)
+
+            # Update add to portfolio available cash
+            record = self.get_portfolio_record(simulator_id)
+            old_amount = round(record[0][2], 2)
+            new_amount = round(old_amount + (total_shares * stock_processor.get_stock_price(stock_name)), 2)
             self.portfolio.update_available_cash(simulator_id, new_amount)

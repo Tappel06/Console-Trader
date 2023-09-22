@@ -5,6 +5,7 @@ from Display.stock_market_menu import Stock_market_menu
 from Display.portfolio_menu import Portfolio_menu
 from Processors.simulator_processors import Simulator_processors
 from Processors.portfolio_processors import Portfolio_processors
+from Processors.stock_processors import Stock_processors
 import os
 
 
@@ -24,6 +25,8 @@ class Simulator_portfolio():
         self.simulator = Simulator_processors()
         # Creates Portfolio processor object
         self.portfolio_processor = Portfolio_processors()
+        # Creates stock_processor object
+        self.stock_processor = Stock_processors(self.simulator_id)
 
         self.simulator_portfolio_options()
 
@@ -77,13 +80,24 @@ class Simulator_portfolio():
         # Record of the portfolio
         record = self.portfolio_processor.get_portfolio_record(self.simulator_id)
 
+        # Gets list of records in portfolio_stock_table
+        records = self.portfolio_processor.get_portfolio_stock_records(self.simulator_id)
+
         # Clears console
         os.system("cls || clear")
+
+        # Calculates the value of of current shares
+        stocks_value = 0
+        for stock in records:
+            value = self.stock_processor.get_stock_price(stock[1])
+            current_shares = self.portfolio_processor.get_stock_total_shares(self.simulator_id, stock[1])
+            total_value = current_shares * value
+            stocks_value += total_value
 
         # Print header
         print(f'''Simulator: {self.simulator.get_simulator_name(self.simulator_id)}
 Available Funds: {round(record[0][2], 2)} coins
-Portfolio value: 0.00 coins
------------------------------              
+Portfolio value: {round(stocks_value + record[0][2], 2)} coins
+-----------------------------             
               ''')
 

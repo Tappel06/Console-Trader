@@ -3,6 +3,7 @@
 #=====Imports=====#
 from Processors.stock_processors import Stock_processors
 from Processors.stock_market_engine import Stock_market_engine
+from Processors.simulator_processors import Simulator_processors
 from Processors.portfolio_processors import Portfolio_processors
 from Display.sell_menu import Sell_menu
 import os
@@ -19,6 +20,8 @@ class Portfolio_menu():
         self.stock_engine = Stock_market_engine(self.simulator_id)
         # Create portfolio processor object
         self.portfolio_processor = Portfolio_processors()
+        # Creates simulator object
+        self.simulator = Simulator_processors()
         
 
     def portfolio_options(self):
@@ -26,8 +29,8 @@ class Portfolio_menu():
         # get stock list of portfolio
         stock_list = self.portfolio_processor.get_portfolio_stock_records(self.simulator_id)
 
-        # CLears console
-        os.system("cls || clear")
+        self.portfolio_header()
+
         while True:
             self.print_portfolio_options()
 
@@ -54,8 +57,7 @@ class Portfolio_menu():
                 
                 elif option == len(stock_list) + 1:
                     self.stock_engine.next_turn()
-                    # clears console
-                    os.system("cls || clear")
+                    self.portfolio_header()
 
                 elif option == len(stock_list) + 2:
                     break
@@ -79,10 +81,10 @@ class Portfolio_menu():
 Current turn: ?
 
 Stock Name = NME
-Current Price = CP
-Price change since beginnining = P%B
+Total Shares = TS
+Value = V
 
-#    NME{" " * 17}CP{" " * 8}P%B{" " * 7}
+#    NME{" " * 17}TS{" " * 8}V{" " * 7}
 {"-" * 50}''')
         self.stock_display()
         
@@ -100,16 +102,49 @@ Price change since beginnining = P%B
 
         stock_current_price_colour = ""
 
-        # index number
+        # Index number
         index = 1
         for stock in list:
+
+            # Stock current price
+            current_price = round(self.stock_processors.get_stock_price(stock[1]), 2)
 
             # Print
             print(f"{index}.{' ' * (4 - len(str(index)))}" # Index
                   + f"{stock[1]}{' ' * (20- len(str(stock[1])))}"    # Stock name
+                  + f"{stock[2]}{' ' * (10- len(str(stock[2])))}"    # Total Shares
+                  + f"{stock[2] * current_price}"
                 )
             
             # Index plus 1
             index += 1
         
         print(f"{'-' * 50}")
+
+
+    def portfolio_header(self):
+        """Displays the header of the portfolio"""
+
+        # Record of the portfolio
+        record = self.portfolio_processor.get_portfolio_record(self.simulator_id)
+
+        # Gets list of records in portfolio_stock_table
+        records = self.portfolio_processor.get_portfolio_stock_records(self.simulator_id)
+
+        # Clears console
+        os.system("cls || clear")
+
+        # Calculates the value of of current shares
+        stocks_value = 0
+        for stock in records:
+            value = self.stock_processors.get_stock_price(stock[1])
+            current_shares = self.portfolio_processor.get_stock_total_shares(self.simulator_id, stock[1])
+            total_value = current_shares * value
+            stocks_value += total_value
+
+        # Print header
+        print(f'''Simulator: {self.simulator.get_simulator_name(self.simulator_id)}
+Available Funds: {round(record[0][2], 2)} coins
+Portfolio value: {round(stocks_value + record[0][2], 2)} coins
+-----------------------------             
+              ''')
