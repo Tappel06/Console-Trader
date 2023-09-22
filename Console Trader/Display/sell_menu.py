@@ -35,7 +35,7 @@ class Sell_menu():
 
         while True:
             try:
-                shares = int(input("Enter \'0\" to cancel\nAmount of shares to buy: "))
+                shares = int(input("Enter \'0\" to cancel\nAmount of shares to sell: "))
 
                 if shares == 0:
                     return
@@ -53,7 +53,7 @@ class Sell_menu():
 
                         if choice.upper() == "Y":
                             # update(sell) / delete record
-                            #self.portfolio_processor.buy_create_or_update_stock_record(self.simulator_id, self.stock_name, shares)
+                            self.portfolio_processor.sell_delete_or_update_stock_record(self.simulator_id, self.stock_name, shares)
                             return
                     
                         elif choice.upper() == "N":
@@ -75,13 +75,24 @@ class Sell_menu():
         # Record of the portfolio
         record = self.portfolio_processor.get_portfolio_record(self.simulator_id)
 
+        # Gets list of records in portfolio_stock_table
+        records = self.portfolio_processor.get_portfolio_stock_records(self.simulator_id)
+
         # Clears console
         os.system("cls || clear")
+
+        # Calculates the value of of current shares
+        stocks_value = 0
+        for stock in records:
+            value = self.stock_processor.get_stock_price(stock[1])
+            current_shares = self.portfolio_processor.get_stock_total_shares(self.simulator_id, stock[1])
+            total_value = current_shares * value
+            stocks_value += total_value
 
         # Print header
         print(f'''Simulator: {self.simulator.get_simulator_name(self.simulator_id)}
 Available Funds: {round(record[0][2], 2)} coins
-Portfolio value: 0.00 coins
+Portfolio value: {round(stocks_value + record[0][2], 2)} coins
 -----------------------------              
 Sell {self.stock_name} shares
 

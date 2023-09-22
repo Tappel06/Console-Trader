@@ -46,7 +46,7 @@ class Portfolio_stock_table():
                                 Simulator_id INT(7),
                                 Stock_name VARCHAR(30),
                                 Total_stocks INT(10),
-                                PRIMARY KEY(Simulator_id)
+
                                 );''')
                 # Commit the query
                 db.commit()
@@ -152,11 +152,11 @@ class Portfolio_stock_table():
 
             try:
                 # Executes query
-                cursor.execute('''DELETE FROM portfolio_table
+                cursor.execute('''DELETE FROM portfolio_stock_table
                                 WHERE Simulator_id = ?
                                 AND Stock_name = ?;''', (simulator_id, stock_name,))
                 db.commit()
             
             except Exception:
                 db.rollback()
-                print("Could not delete record from portfolio_table")
+                print("Could not delete record from portfolio_stock_table")
